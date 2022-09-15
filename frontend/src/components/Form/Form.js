@@ -7,37 +7,50 @@ import { createPost,updatePost } from '../../redux/actions/posts';
 const Form = ({ currentId, setCurrentId}) => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const user = JSON.parse(localStorage.getItem('profile'));
+
   const [postData, setPostData] = useState({
-    creator: '', title: '', message: '', tags: '', selectedFile: ''
+   title: '', message: '', tags: '', selectedFile: ''
   })
+
   const post = useSelector((state)=> currentId? state.posts.find((p)=>p._id === currentId):null);
+
   useEffect(() => {
     if(post){
       setPostData(post);
     }
   }, [post]);
+
   const submitHandler = async (e)=>{
     e.preventDefault();
     if(currentId){
-      dispatch(updatePost(currentId,postData));
+      dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
       clear();
     }else{
-      dispatch(createPost(postData));
+      dispatch(createPost({ ...postData, name: user?.result?.name }));
       clear();
     }
   }
   const clear = ()=>{
     setCurrentId(0);
-    setPostData({ creator:'', title: '', message: '', tags: '', selectedFile: '' });
+    setPostData({ title: '', message: '', tags: '', selectedFile: '' });
+  }
+
+  if(!user?.result?.name){
+    return(
+      <Paper className= {classes.paper}>
+        <Typography variant="h6" align = "center"> Please Sign In to show your Nazariya and like others too! </Typography>
+      </Paper>
+    )
   }
   return (
     <Paper className={classes.paper}>
       <form autoComplete = "off" noValidate className= {`${classes.form} ${classes.root}`} onSubmit={submitHandler}>
         <Typography variant='h6' className={classes.formHeading} style={{fontWeight: 600}}>{currentId ? `Editing ${post.title}` : 'Creating a Memory'}</Typography>
-        <TextField name='creator' style={{margin: '5px 0px'}} variant='outlined'  label="Creator" fullWidth value={postData.creator} onChange={(e)=>setPostData({...postData,creator: e.target.value})}/>
+        {/* <TextField name='creator' style={{margin: '5px 0px'}} variant='outlined'  label="Creator" fullWidth value={postData.creator} onChange={(e)=>setPostData({...postData,creator: e.target.value})}/> */}
         <TextField name='title' style={{margin: '5px 0px'}} variant='outlined'  label="Title" fullWidth value={postData.title} onChange={(e)=>setPostData({...postData,title: e.target.value})}/>
-        <TextField name='message' style={{margin: '5px 0px'}} variant='outlined'  label="Message" fullWidth value={postData.message} onChange={(e)=>setPostData({...postData,message: e.target.value})}/>
-        <TextField name='tags' style={{margin: '5px 0px'}} variant='outlined'  label="Tags" fullWidth value={postData.tags} onChange={(e)=>setPostData({...postData,tags: e.target.value.split(',')})}/>
+        <TextField name='message' style={{margin: '5px 0px'}} multiline minRows={4} variant='outlined'  label="Message" fullWidth value={postData.message} onChange={(e)=>setPostData({...postData,message: e.target.value})}/>
+        <TextField name='tags' style={{margin: '5px 0px'}} variant='outlined'  label="Tags(Comma seperated)" fullWidth value={postData.tags} onChange={(e)=>setPostData({...postData,tags: e.target.value.split(',')})}/>
         <div className={classes.fileInput}>
           <FileBase type= "file" multiple={false} onDone={({base64})=>setPostData({...postData,selectedFile: base64})}/>
         </div>
@@ -48,4 +61,4 @@ const Form = ({ currentId, setCurrentId}) => {
   )
 }
 
-export default Form
+export default Form;

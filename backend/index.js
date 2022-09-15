@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from 'cors';
 import postRoutes from './routes/post.js';
+import userRoutes from './routes/user.js';
 import dotenv from 'dotenv';
 const app = express();
 dotenv.config();
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
 //Routes
 app.use('/posts',postRoutes);
+app.use('/user',userRoutes);
 
 
 // const MONGODB_URI = "mongodb+srv://vee_cee:vee_cee@cluster0.x5ajj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
