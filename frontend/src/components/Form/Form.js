@@ -13,7 +13,7 @@ const Form = ({ currentId, setCurrentId}) => {
    title: '', message: '', tags: '', selectedFile: ''
   })
 
-  const post = useSelector((state)=> currentId? state.posts.find((p)=>p._id === currentId):null);
+  const post = useSelector((state)=> currentId? state.posts.posts.find((p)=>p._id === currentId):null);
 
   useEffect(() => {
     if(post){
@@ -27,7 +27,7 @@ const Form = ({ currentId, setCurrentId}) => {
       dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
       clear();
     }else{
-      dispatch(createPost({ ...postData, name: user?.result?.name }));
+      dispatch(createPost(currentId, { ...postData, name: user?.result?.name }));
       clear();
     }
   }
@@ -44,7 +44,7 @@ const Form = ({ currentId, setCurrentId}) => {
     )
   }
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={6}>
       <form autoComplete = "off" noValidate className= {`${classes.form} ${classes.root}`} onSubmit={submitHandler}>
         <Typography variant='h6' className={classes.formHeading} style={{fontWeight: 600}}>{currentId ? `Editing ${post.title}` : 'Creating a Memory'}</Typography>
         {/* <TextField name='creator' style={{margin: '5px 0px'}} variant='outlined'  label="Creator" fullWidth value={postData.creator} onChange={(e)=>setPostData({...postData,creator: e.target.value})}/> */}

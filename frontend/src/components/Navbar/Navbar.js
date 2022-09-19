@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {Container, AppBar,  Typography, Toolbar,  Button,  Avatar} from "@material-ui/core";
+import { AppBar,  Typography, Toolbar,  Button,  Avatar} from "@material-ui/core";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import decode from 'jwt-decode';
 import useStyles from "./style";
-import logo from "../../resources/cee.png";
+import logo from "../../resources/memories-Logo.png";
+import memoriesText from "../../resources/Logo.png";
 import { useDispatch } from "react-redux";
 import * as actionType from "../../redux/actionTypes/index";
 
@@ -16,19 +17,17 @@ const Navbar = () => {
 
   const logout = () => {
     dispatch({ type: actionType.LOGOUT });
-
     navigate('/auth');
-
     setUser(null);
   };
 
   useEffect(() => {
     const token = user?.token;
+
     if (token) {
       const decodedToken = decode(token);
-      if (decodedToken.exp * 1000 < new Date().getTime()){
-        logout()
-      }
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
 
     setUser(JSON.parse(localStorage.getItem('profile')));
@@ -37,31 +36,10 @@ const Navbar = () => {
 
   return (
     <AppBar className={classes.appBar} color="inherit">
-      <Container maxWidth="xs" className={classes.headingContainer}>
-        <Typography
-          className={classes.heading}
-          variant="h3"
-          align="center"
-          component={Link}
-          to="/"
-        >
-          Vee-Cee
-        </Typography>
-        <Typography
-          className={classes.subHeading}
-          variant="subtitle1"
-          align="center"
-        >
-          Nazariya
-        </Typography>
-      </Container>
-      <img
-        className={classes.image}
-        src={logo}
-        alt="icon"
-        height="100"
-        align="center"
-      />
+      <Link to="/" className={classes.brandContainer}>
+        <img component={Link} to="/" src={memoriesText} alt="icon" height="55px" />
+        <img className={classes.image} src={logo} alt="icon" height="40px" />
+      </Link>
       <Toolbar className={classes.toolbar}>
         {user?.result ? (
           <div className={classes.profile}>
