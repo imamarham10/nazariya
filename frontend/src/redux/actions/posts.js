@@ -27,21 +27,24 @@ export const getPosts = (page) => async (dispatch) => {
     }
   };
 
-export const getPostsBySearch = (searchQuery) => async (dispatch) => {
-    try{    
-      dispatch({type: START_LOADING});
+  export const getPostsBySearch = (searchQuery) => async (dispatch) => {
+    try {
+      dispatch({ type: START_LOADING });
       const { data: { data } } = await api.fetchPostsBySearch(searchQuery);
-      dispatch({ type: FETCH_BY_SEARCH, payload: data });
-      dispatch({type: END_LOADING});
-     // console.log(data);
-    } catch(error){
+  
+      dispatch({ type: FETCH_BY_SEARCH, payload: { data } });
+      dispatch({ type: END_LOADING });
+    } catch (error) {
       console.log(error);
     }
-}  
-export const createPost = (post) => async(dispatch) => {
+  };
+
+  
+export const createPost = (post,navigate) => async(dispatch) => {
     try{
         const { data } = await api.createPosts(post);
         dispatch({type: CREATE, payload: data});
+        navigate(`/posts/${data._id}`)
     }catch(error){
         console.log(error.message);
     }

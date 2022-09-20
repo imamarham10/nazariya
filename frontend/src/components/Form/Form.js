@@ -4,9 +4,11 @@ import FileBase from 'react-file-base64';
 import useStyles from "./styles";
 import { useDispatch,useSelector } from 'react-redux';
 import { createPost,updatePost } from '../../redux/actions/posts';
+import { useNavigate } from 'react-router';
 const Form = ({ currentId, setCurrentId}) => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('profile'));
 
   const [postData, setPostData] = useState({
@@ -27,7 +29,7 @@ const Form = ({ currentId, setCurrentId}) => {
       dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
       clear();
     }else{
-      dispatch(createPost({ ...postData, name: user?.result?.name }));
+      dispatch(createPost({ ...postData, name: user?.result?.name },navigate));
       clear();
     }
     //     if (currentId === 0) {
