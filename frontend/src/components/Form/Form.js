@@ -13,7 +13,7 @@ const Form = ({ currentId, setCurrentId}) => {
    title: '', message: '', tags: '', selectedFile: ''
   })
 
-  const post = useSelector((state)=> currentId? state.posts.posts.find((p)=>p._id === currentId):null);
+  const post = useSelector((state) => (currentId ? state.posts.posts.find((message) => message._id === currentId) : null));
 
   useEffect(() => {
     if(post){
@@ -27,9 +27,16 @@ const Form = ({ currentId, setCurrentId}) => {
       dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
       clear();
     }else{
-      dispatch(createPost(currentId, { ...postData, name: user?.result?.name }));
+      dispatch(createPost({ ...postData, name: user?.result?.name }));
       clear();
     }
+    //     if (currentId === 0) {
+    //   dispatch(createPost({ ...postData, name: user?.result?.name }));
+    //   clear();
+    // } else {
+    //   dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
+    //   clear();
+    // }
   }
   const clear = ()=>{
     setCurrentId(0);

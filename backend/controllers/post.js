@@ -43,6 +43,7 @@ export const getPost = async (req, res) => {
     }
 }
 
+
 export const createPosts = async (req,res)=>{
     const post = req.body;
     //console.log(req.userId);
