@@ -1,5 +1,5 @@
 import * as api from '../../api';
-import { CREATE, DELETE, FETCH_ALL,UPDATE,LIKE, FETCH_BY_SEARCH, START_LOADING, END_LOADING, FETCH_POST } from '../actionTypes';
+import { CREATE, DELETE, FETCH_ALL,UPDATE,LIKE,COMMENT, FETCH_BY_SEARCH, START_LOADING, END_LOADING, FETCH_POST } from '../actionTypes';
 
 //Action Creators
 export const getPost = (id) => async (dispatch) => {
@@ -72,6 +72,16 @@ export const likePost = (id) => async (dispatch) => {
   }
 };
 
+export const commentPost = (value,id) => async(dispatch) =>{
+  try{
+    const { data } = await api.comment(value, id);
+    dispatch({ type: COMMENT, payload: data });
+    return data.comments;
+//    console.log(data);
+  }catch(error){
+    console.log(error);
+  }
+}
 export const deletePost = (id) => async (dispatch) => {
   try {
     await await api.deletePost(id);

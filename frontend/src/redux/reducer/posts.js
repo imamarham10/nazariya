@@ -5,7 +5,8 @@ import {
   DELETE,
   LIKE,
   FETCH_BY_SEARCH,
-  FETCH_POST
+  FETCH_POST,
+  COMMENT
 } from "../actionTypes/index";
 
 export default (state = {isLoading: true, posts: []}, action) => {
@@ -28,7 +29,17 @@ case FETCH_BY_SEARCH:
       return { ...state, post: action.payload.post };  
     case LIKE:
       return { ...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post)) };
-    case CREATE:
+    case COMMENT:
+      return {
+        ...state,
+        posts: state.posts.map((post) => {
+          if (post._id === action.payload._id) {
+            return action.payload;
+          }
+          return post;
+        }),
+      };
+      case CREATE:
       return { ...state, posts: [...state.posts, action.payload] };
     case UPDATE:
       return { ...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post)) };

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { useParams, useNavigate } from 'react-router-dom';
 import useStyles from './styles.js';
 import { getPost,getPostsBySearch } from '../../redux/actions/posts';
+import CommentSection from './CommentSection.js';
 
 const PostDetails = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
@@ -12,7 +13,6 @@ const PostDetails = () => {
   const navigate = useNavigate();
   const classes = useStyles();
   const { id } = useParams();
-  console.log(id);
   
   useEffect(()=>{
     dispatch(getPost(id));
@@ -51,7 +51,8 @@ const PostDetails = () => {
           <Divider style={{ margin: '20px 0' }} />
           <Typography variant="body1"><strong>Realtime Chat - coming soon!</strong></Typography>
           <Divider style={{ margin: '20px 0' }} />
-          <Typography variant="body1"><strong>Comments - coming soon!</strong></Typography>
+          <CommentSection post= {post} />
+          {/* <Typography variant="body1"><strong>Comments - coming soon!</strong></Typography> */}
           <Divider style={{ margin: '20px 0' }} />
         </div>
         <div className={classes.imageSection}>
